@@ -1,0 +1,20 @@
+{
+  "Version": 1,
+  "Hash": "TOC+SKIyHMEcuYV1BAyj/9Eba3x4CXgYtGiS5pCTrO8=",
+  "Source": "E_Commerce.API",
+  "BasePath": "_content/E_Commerce.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "E_Commerce.API\\wwwroot",
+      "Source": "E_Commerce.API",
+      "ContentRoot": "E:\\.NET\\final\\E_Commerce\\wwwroot\\",
+      "BasePath": "_content/E_Commerce.API",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [],
+  "Endpoints": []
+}
