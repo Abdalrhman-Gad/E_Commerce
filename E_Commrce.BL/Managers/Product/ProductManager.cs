@@ -28,7 +28,7 @@ public class ProductManager : IProductManager
             var subcategoryProducts = products.Where(p => p.Categories.Contains(subcategory));
 
             var productCount = subcategoryProducts.Count();
- 
+
 
             var subcategoryDto = new ProductCategoryPagination
             {
@@ -76,21 +76,13 @@ public class ProductManager : IProductManager
                 Rate = p.Rate,
                 ProductImages = p.ProductImages.Select(i => i.ImageURL).ToList(),
                 Review = unitOfWork.ProductsRepo.GetProductReviews(p.Id).Reviews.Count
-            }) ;
+            });
         }
         return productsDto;
     }
 
-
-
-
-
-
-
-
-
     public List<ProductReadDto> AllProducts()
-{
+    {
         List<Product> productsFromDB = unitOfWork.ProductsRepo.GetAll();
         return productsFromDB.Select(p => new ProductReadDto
         {
@@ -268,7 +260,7 @@ public class ProductManager : IProductManager
             Discount = productFromDB.Discount,
             ProductCategories = productFromDB.Categories.Select(c => c.Id).ToList(),
             Images = productFromDB.ProductImages.Select(c => c.ImageURL).ToList(),
-            
+
             ProductInfo = productFromDB.Product_Color_Size_Quantity.Select(pi => new ProductInfoDto
             {
                 Size = pi.Size.ToString(),
@@ -378,8 +370,6 @@ public class ProductManager : IProductManager
         return filtered;
     }
 
-
-
     public List<ProductWithImagesDto> ProductsWithImages()
     {
 
@@ -451,5 +441,22 @@ public class ProductManager : IProductManager
         }).ToList();
 
         return productImages;
+    }
+
+    public List<ProductWithImagesDto> ProductsStartsWith(string query)
+    {
+        var productsFromDB = unitOfWork.ProductsRepo.GetProductStartsWith(query);
+
+        return productsFromDB.Select(p => new ProductWithImagesDto
+        {
+            Id = p.Id,
+            Rate = p.Rate,
+            ProductImages = p.ProductImages.Select(i => i.ImageURL).ToList(),
+            Price = p.Price,
+            Discount = p.Discount,
+            Description = p.Description,
+            Name = p.Name,
+            Review = unitOfWork.ProductsRepo.GetProductReviews(p.Id)!.Reviews!.Count
+        }).ToList();
     }
 }

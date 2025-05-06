@@ -275,6 +275,7 @@ public class OrderManager : IOrderManager
             Street = o.Street,
             City = o.City,
             Country = o.Country,
+            TotalPrice = o.TotalPrice,
 
             OrderProducts = o.OrderProducts.Select(op => new ProductChildReadDto
             {

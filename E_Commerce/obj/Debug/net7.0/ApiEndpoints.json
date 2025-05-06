@@ -933,6 +933,32 @@
   },
   {
     "ContainingType": "E_Commerce.API.Controllers.ProductsController",
+    "Method": "SearchForProducts",
+    "RelativePath": "api/Products/SearchForProducts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "query",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[E_Commerce.BL.ProductWithImagesDto, E_Commerce.BL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "E_Commerce.API.Controllers.ProductsController",
     "Method": "GetProductsUnique",
     "RelativePath": "api/Products/UniqueProducts",
     "HttpMethod": "GET",

@@ -22,5 +22,6 @@ namespace E_Commerce.BL
         public string City { get; set; } = string.Empty;
         public Countries Country { get; set; }
         public List<ProductChildReadDto>? OrderProducts { get; set; }
+        public decimal TotalPrice { get; set; }
     }
 }

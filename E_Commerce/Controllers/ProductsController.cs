@@ -1,5 +1,4 @@
 ﻿using E_Commerce.BL;
-using E_Commerce.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -36,6 +35,15 @@ namespace E_Commerce.API.Controllers
             List<ProductReadDto> products = productManager.AllProducts();
             return products;
         }
+
+        [HttpGet]
+        [Route("SearchForProducts")]
+        public ActionResult<List<ProductWithImagesDto>> SearchForProducts(string query)
+        {
+            var products = productManager.ProductsStartsWith(query);
+            return products;
+        }
+
         [HttpPost]
         [Route("Images")]
         public async Task<IActionResult> UploadImage(List<IFormFile> Images)

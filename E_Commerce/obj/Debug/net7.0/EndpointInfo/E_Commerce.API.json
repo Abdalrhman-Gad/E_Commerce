@@ -1346,6 +1346,54 @@
         }
       }
     },
+    "/api/Products/SearchForProducts": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "style": "form",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductWithImagesDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductWithImagesDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductWithImagesDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Products/Images": {
       "post": {
         "tags": [
@@ -3242,6 +3290,10 @@
               "$ref": "#/components/schemas/ProductChildReadDto"
             },
             "nullable": true
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
