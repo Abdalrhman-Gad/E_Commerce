@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "TOC+SKIyHMEcuYV1BAyj/9Eba3x4CXgYtGiS5pCTrO8=",
+  "Hash": "6nF7RsJWEarHWfKvxH5UWucOn1v9ZtsDLng6QjTGZMM=",
   "Source": "E_Commerce.API",
   "BasePath": "_content/E_Commerce.API",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "E_Commerce.API\\wwwroot",
       "Source": "E_Commerce.API",
-      "ContentRoot": "E:\\.NET\\final\\E_Commerce\\wwwroot\\",
+      "ContentRoot": "E:\\.NET\\E_Commerce\\E_Commerce\\wwwroot\\",
       "BasePath": "_content/E_Commerce.API",
       "Pattern": "**"
     }

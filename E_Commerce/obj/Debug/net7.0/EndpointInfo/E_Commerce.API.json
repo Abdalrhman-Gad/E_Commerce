@@ -1194,7 +1194,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/OrderTableDto"
+                    "$ref": "#/components/schemas/OrderWithProductsReadDto"
                   }
                 }
               },
@@ -1202,7 +1202,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/OrderTableDto"
+                    "$ref": "#/components/schemas/OrderWithProductsReadDto"
                   }
                 }
               },
@@ -1210,7 +1210,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/OrderTableDto"
+                    "$ref": "#/components/schemas/OrderWithProductsReadDto"
                   }
                 }
               }
@@ -3079,28 +3079,6 @@
         ],
         "type": "integer",
         "format": "int32"
-      },
-      "OrderTableDto": {
-        "type": "object",
-        "properties": {
-          "orderId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "paymentStatus": {
-            "type": "string",
-            "nullable": true
-          },
-          "totalPrice": {
-            "type": "number",
-            "format": "double"
-          },
-          "orderDate": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "additionalProperties": false
       },
       "OrderUpdateDto": {
         "type": "object",

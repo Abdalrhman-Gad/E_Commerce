@@ -31,6 +31,7 @@ public class OrderManager : IOrderManager
             Country = o.Country.ToString(),
         }).ToList();
     }
+
     public List<OrderReadDto> GetAllOrderswithCustName()
     {
         List<Order> orders = _unitOfWork.OrderRepo.GetOrdersWithCustomer();
@@ -47,7 +48,7 @@ public class OrderManager : IOrderManager
             Street = o.Street,
             City = o.City,
             Country = o.Country.ToString(),
-            CustomerName=o.Customer.FirstName +' '+ o.Customer.LastName,
+            CustomerName = o.Customer.FirstName + ' ' + o.Customer.LastName,
         }).ToList();
     }
 
@@ -68,10 +69,11 @@ public class OrderManager : IOrderManager
             Country = order.Country.ToString(),
         };
     }
-    public bool AddOrder(OrderAddDto orderAdd,Guid customerId)
+
+    public bool AddOrder(OrderAddDto orderAdd, Guid customerId)
     {
-        bool checkQuantity =CheckQuantityOfProductsBeforeOrder(customerId);
-        if(!checkQuantity) { return false; }
+        bool checkQuantity = CheckQuantityOfProductsBeforeOrder(customerId);
+        if (!checkQuantity) { return false; }
 
 
         Order order = new()
@@ -81,7 +83,7 @@ public class OrderManager : IOrderManager
             PaymentStatus = (PaymentStatus)Enum.Parse(typeof(PaymentStatus), orderAdd.PaymentStatus),
             PaymentMethod = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), orderAdd.PaymentMethod),
             OrderStatus = orderAdd.OrderStatus,
-            Discount =(double) orderAdd.Discount,
+            Discount = (double)orderAdd.Discount,
             ArrivalDate = orderAdd.ArrivalDate,
             Street = orderAdd.Street!,
             City = orderAdd.City!,
@@ -89,8 +91,8 @@ public class OrderManager : IOrderManager
             CustomerId = customerId.ToString(),
             TotalPrice = orderAdd.TotalPrice,
         };
-        
-        order.OrderProducts = orderAdd.OrderProducts!.Select(op => new OrderProduct() 
+
+        order.OrderProducts = orderAdd.OrderProducts!.Select(op => new OrderProduct()
         {
             OrderId = order.Id,
             ProductId = op.ProductId,
@@ -101,20 +103,20 @@ public class OrderManager : IOrderManager
         }).ToList();
 
         _unitOfWork.OrderRepo.Add(order);
-        
+
         /// Decrease Quantity
         /// 
 
         var cartProduct = _unitOfWork.CartRepo.GetCartProductByCustomerId(customerId).Products;
-       
+
 
 
         var productsDetails = _unitOfWork.ProductsRepo.GetProductsInfo()
                 .Where(p => cartProduct.Select(ps => ps.ProductId).Contains(p.ProductID)).ToList();
 
-        for (int i=0;i<productsDetails.Count;i++)
+        for (int i = 0; i < productsDetails.Count; i++)
         {
-            if (cartProduct.FirstOrDefault(p=>p.ProductId == productsDetails[i].ProductID)!=null
+            if (cartProduct.FirstOrDefault(p => p.ProductId == productsDetails[i].ProductID) != null
                 && cartProduct.FirstOrDefault(p => p.Color == productsDetails[i].Color) != null
                 && cartProduct.FirstOrDefault(p => p.Size == productsDetails[i].Size) != null)
             {
@@ -122,9 +124,10 @@ public class OrderManager : IOrderManager
             }
         }
 
-       _unitOfWork.CartRepo.Delete(_unitOfWork.CartRepo.GetCartProductByCustomerId(customerId));
+        _unitOfWork.CartRepo.Delete(_unitOfWork.CartRepo.GetCartProductByCustomerId(customerId));
         return _unitOfWork.SaveChange() > 0;
     }
+
     public bool UpdateOrder(OrderUpdateDto orderUpdate)
     {
         Order? order = _unitOfWork.OrderRepo.GetById(orderUpdate.Id);
@@ -132,7 +135,7 @@ public class OrderManager : IOrderManager
 
         order.PaymentStatus = (PaymentStatus)Enum.Parse(typeof(PaymentStatus), orderUpdate.PaymentStatus);
         order.PaymentMethod = (PaymentMethod)Enum.Parse(typeof(PaymentMethod), orderUpdate.PaymentMethod);
-        order.OrderStatus = (OrderStatus)Enum.Parse(typeof(OrderStatus), orderUpdate.OrderStatus); 
+        order.OrderStatus = (OrderStatus)Enum.Parse(typeof(OrderStatus), orderUpdate.OrderStatus);
         order.Discount = orderUpdate.Discount;
         order.ArrivalDate = orderUpdate.ArrivalDate;
         order.Street = orderUpdate.Street!;
@@ -143,6 +146,7 @@ public class OrderManager : IOrderManager
         _unitOfWork.OrderRepo.Update(order); //add
         return _unitOfWork.SaveChange() > 0;
     }
+
     public OrderWithProductsAndCustomerReadDto? OrderWithProductsAndCustomerRead(Guid id)
     {
         Order? order = _unitOfWork.OrderRepo.GetOrderProductsAndCustomer(id);
@@ -237,32 +241,49 @@ public class OrderManager : IOrderManager
         return _unitOfWork.SaveChange() > 0;
     }
 
-
     public bool CheckQuantityOfProductsBeforeOrder(Guid customerId)
     {
         var checkQuantity = _unitOfWork.CartRepo.GetCartProductByCustomerId(customerId).Products
             .FirstOrDefault(ps => ps.ProductCount <= _unitOfWork.ProductsRepo.GetProductDetails(ps.ProductId).Product_Color_Size_Quantity
             .FirstOrDefault(p => p.Color == ps.Color && p.Size == ps.Size).Quantity);
-        if(checkQuantity == null) {
+        if (checkQuantity == null)
+        {
             return false;
         }
 
         return true;
     }
 
-    public List<OrderTableDto> GetOrdersByCustomerId(string customerId)
+    public List<OrderWithProductsReadDto> GetOrdersByCustomerId(string customerId)
     {
         List<Order> orders = _unitOfWork.OrderRepo.GetOrdersByCustomerId(customerId);
+
         if (orders is null)
         {
             return null!;
         }
-        return orders.Select(o => new OrderTableDto
+
+        return orders.Select(o => new OrderWithProductsReadDto
         {
-            OrderId = o.Id,
-            PaymentStatus = o.PaymentStatus.ToString(),
-            TotalPrice = o.OrderProducts.Sum(op => op.Product.Price * op.ProductCount),
-            OrderDate = o.OrderData
+            Id = o.Id,
+            OrderData = o.OrderData,
+            PaymentStatus = o.PaymentStatus,
+            PaymentMethod = o.PaymentMethod,
+            OrderStatus = o.OrderStatus,
+            Discount = o.Discount,
+            ArrivalDate = o.ArrivalDate,
+            Street = o.Street,
+            City = o.City,
+            Country = o.Country,
+
+            OrderProducts = o.OrderProducts.Select(op => new ProductChildReadDto
+            {
+                Id = op.OrderId,
+                Name = op.Product!.Name,
+                Description = op.Product!.Description,
+                Price = op.Product.Price,
+                Discount = (double)op.Product.Discount,
+            }).ToList()
         }).ToList();
     }
 }

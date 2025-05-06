@@ -25,7 +25,6 @@ public class CustomerReviewRepo : GenericRepo<CustomerReview>, ICustomerReviewRe
                         .FirstOrDefault(cr => cr.CustomerId == customerId.ToString() && cr.ProductId == productId);
     }
 
-
     public CustomerReview? GetByIdsWithCustomerProduct(Guid customerId, Guid productId)
     {
         return context.Set<CustomerReview>()

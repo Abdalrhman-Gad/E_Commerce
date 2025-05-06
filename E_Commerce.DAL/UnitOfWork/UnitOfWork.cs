@@ -1,6 +1,4 @@
-﻿
-
-namespace E_Commerce.DAL
+﻿namespace E_Commerce.DAL
 {
     public class UnitOfWork : IUnitOfWork
     {
@@ -31,8 +29,6 @@ namespace E_Commerce.DAL
             WishListRepo = wishListRepo;
             CartProductRepo = cartProductRepo;
         }
-
-        
 
         public int SaveChange()
         {

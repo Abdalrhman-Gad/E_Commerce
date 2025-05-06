@@ -3643,11 +3643,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\.NET\\final\\E_Commerce.DAL\\E_Commerce.DAL.csproj",
+      "projectUniqueName": "E:\\.NET\\E_Commerce\\E_Commerce.DAL\\E_Commerce.DAL.csproj",
       "projectName": "E_Commerce.DAL",
-      "projectPath": "E:\\.NET\\final\\E_Commerce.DAL\\E_Commerce.DAL.csproj",
+      "projectPath": "E:\\.NET\\E_Commerce\\E_Commerce.DAL\\E_Commerce.DAL.csproj",
       "packagesPath": "C:\\Users\\gad44\\.nuget\\packages\\",
-      "outputPath": "E:\\.NET\\final\\E_Commerce.DAL\\obj\\",
+      "outputPath": "E:\\.NET\\E_Commerce\\E_Commerce.DAL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

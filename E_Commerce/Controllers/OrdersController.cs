@@ -89,17 +89,15 @@ namespace E_Commerce.API.Controllers
         [HttpGet]
         [Authorize(Policy = "ForCustomer")]
         [Route("ByCustomer")]
-        public ActionResult<List<OrderTableDto>> GetOrdersByCustomerId()
+        public ActionResult<List<OrderWithProductsReadDto>> GetOrdersByCustomerId()
         {
             var customereId = _customer.GetUserAsync(User).Result.Id;
-            List<OrderTableDto> orders = _orderManager.GetOrdersByCustomerId(customereId);
+            var orders = _orderManager.GetOrdersByCustomerId(customereId);
             if (orders is null)
             {
                 return NotFound();
             }
             return orders;
         }
-
-
     }
 }

@@ -70,8 +70,6 @@ builder.Services.AddScoped<ISecurityManager, SecurityManager>();
 builder.Services.AddScoped<IFilterManger,FilterManger>();
 #endregion
 
-
-
 #region Identity
 
 builder.Services.AddIdentity<Customer, IdentityRole>(options =>
@@ -123,7 +121,6 @@ builder.Services.AddAuthorization(options =>
 });
 
 #endregion
-
 
 var app = builder.Build();
 var staticFilesPath = Path.Combine(Environment.CurrentDirectory, "Images");
