@@ -29,6 +29,7 @@ public class OrderManager : IOrderManager
             Street = o.Street,
             City = o.City,
             Country = o.Country.ToString(),
+            TotalPrice = o.TotalPrice,
         }).ToList();
     }
 
@@ -49,6 +50,7 @@ public class OrderManager : IOrderManager
             City = o.City,
             Country = o.Country.ToString(),
             CustomerName = o.Customer.FirstName + ' ' + o.Customer.LastName,
+            TotalPrice = o.TotalPrice,
         }).ToList();
     }
 
@@ -67,6 +69,7 @@ public class OrderManager : IOrderManager
             Street = order.Street,
             City = order.City,
             Country = order.Country.ToString(),
+            TotalPrice = order.TotalPrice,
         };
     }
 
@@ -151,34 +154,36 @@ public class OrderManager : IOrderManager
     {
         Order? order = _unitOfWork.OrderRepo.GetOrderProductsAndCustomer(id);
         if (order is null) { return null; }
+
         return new OrderWithProductsAndCustomerReadDto
         {
-            Id = order.Id,
+
             OrderData = order.OrderData,
             PaymentStatus = order.PaymentStatus,
             PaymentMethod = order.PaymentMethod,
             OrderStatus = order.OrderStatus,
-            Discount = order.Discount,
-            ArrivalDate = order.ArrivalDate,
+
+
             Street = order.Street,
             City = order.City,
             Country = order.Country,
 
-            CustomerId = order.CustomerId,
+
             CustomerFname = order.Customer.FirstName,
             CustomerMname = order.Customer.MidName,
             CustomerLname = order.Customer.LastName,
-
-
+            PhoneNumber = order.Customer.PhoneNumber,
             OrderProducts = order.OrderProducts.Select(op => new ProductChildReadDto
             {
-                Id = op.OrderId,
+                Id = op.ProductId,
                 Name = op.Product!.Name,
                 Description = op.Product!.Description,
-                Price = op.Product.Price,
+                Price = op.Price,
                 Discount = (double)op.Product.Discount,
+                Color = op.Color.ToString(),
+                Size = op.Size.ToString(),
+                ProductCount = op.ProductCount
             }).ToList()
-
         };
     }
 
