@@ -18,9 +18,9 @@ public class OrderReadDto
     [Range(0, 1)]
     public double Discount { get; set; }
     public DateTime ArrivalDate { get; set; }
-    public string? Street { get; set; } 
-    public string? City { get; set; } 
+    public string? Street { get; set; }
+    public string? City { get; set; }
     public string? Country { get; set; }
     public String? CustomerName { get; set; }
-
+    public decimal TotalPrice { get; set; }
 }
