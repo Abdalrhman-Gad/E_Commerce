@@ -287,4 +287,15 @@ public class OrderManager : IOrderManager
             }).ToList()
         }).ToList();
     }
+
+    public bool UpdateOrderStatus(Guid orderId, OrderStatus orderStatus)
+    {
+        Order? order = _unitOfWork.OrderRepo.GetById(orderId);
+        if (order is null) return false;
+
+        order.OrderStatus = orderStatus;
+
+        _unitOfWork.OrderRepo.Update(order);
+        return _unitOfWork.SaveChange() > 0;
+    }
 }

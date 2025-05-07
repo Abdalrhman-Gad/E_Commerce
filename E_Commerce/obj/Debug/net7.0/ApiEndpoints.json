@@ -678,6 +678,27 @@
     ]
   },
   {
+    "ContainingType": "E_Commerce.API.Controllers.OrdersController",
+    "Method": "UpdateOrderStatus",
+    "RelativePath": "api/Orders/UpdateOrderStatus",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "orderStatus",
+        "Type": "E_Commerce.DAL.OrderStatus",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "E_Commerce.API.Controllers.ProductsController",
     "Method": "AllProducts",
     "RelativePath": "api/Products",

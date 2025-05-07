@@ -52,14 +52,26 @@ namespace E_Commerce.API.Controllers
             }
             
         }
+
         [HttpPut]
         //[Route("{id}")]
         public ActionResult UpdateOrder(OrderUpdateDto orderUpdate) 
         {
-            bool req=_orderManager.UpdateOrder(orderUpdate);
+            bool req =_orderManager.UpdateOrder(orderUpdate);
             if(!req) return BadRequest(req);
             return Ok("Updated Sucessfully");
         }
+
+        [HttpPatch]
+        [Route("UpdateOrderStatus")]
+        public ActionResult UpdateOrderStatus(Guid orderId, OrderStatus orderStatus)
+        {
+            bool req = _orderManager.UpdateOrderStatus(orderId, orderStatus);
+
+            if (!req) return BadRequest(req);
+            return Ok("Updated Sucessfully");
+        }
+
         [HttpDelete]
         public ActionResult DeleteOrder(Guid id) 
         {
