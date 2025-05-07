@@ -11,40 +11,42 @@ namespace E_Commerce.BL
         {
             _unitOfWork = unitOfWork;
         }
+
         #region AddToCart
-        public void AddToCart(AddToCartDto addToCartDto,string CustomerId)
+        public void AddToCart(AddToCartDto addToCartDto, string CustomerId)
         {
             Cart? cart = _unitOfWork.CartRepo.GetCartProductByCustomerId(new Guid(CustomerId));
             if (cart == null)
             {
-                cart = new Cart();
+                cart = new Cart
+                {
+                    CartId = Guid.NewGuid(),
+                    CustomerId = new Guid(CustomerId),
+                    Products = new List<CartProduct>
+            {
+                new CartProduct
+                {
+                    CartId = cart.CartId,
+                    ProductId = addToCartDto.ProductId,
+                    ProductCount = addToCartDto.ProductCount,
+                    Color = (Color)Enum.Parse<Color>(addToCartDto.Color),
+                    Size = (Size)Enum.Parse<Size>(addToCartDto.Size)
+                }
+            }
+                };
 
-                cart.CartId = Guid.NewGuid();
-                cart.CustomerId = new Guid(CustomerId);
-                cart.Products = new List<CartProduct>
-                    {
-                        new CartProduct
-                        {
-                            CartId = cart.CartId,
-                            ProductId = addToCartDto.ProductId,
-                            ProductCount = addToCartDto.ProductCount,
-                            Color = (Color)Enum.Parse<Color>(addToCartDto.Color),
-                            Size = (Size)Enum.Parse<Size>(addToCartDto.Size)
-                        }
-                    };
                 _unitOfWork.CartRepo.Add(cart);
             }
             else
             {
-                 var productCheck = cart.Products.Where(c =>
-                 
-                     c.Color== (Color)Enum.Parse<Color>(addToCartDto.Color)&&
-                     c.Size == (Size)Enum.Parse<Size>(addToCartDto.Size)
-                  ).FirstOrDefault();
+                var productCheck = cart.Products.FirstOrDefault(c =>
+                    c.ProductId == addToCartDto.ProductId &&
+                    c.Color == (Color)Enum.Parse<Color>(addToCartDto.Color) &&
+                    c.Size == (Size)Enum.Parse<Size>(addToCartDto.Size));
 
-                if (cart.Products==null|| productCheck == null)
+                if (cart.Products == null || productCheck == null)
                 {
-                   var cartproduct = new CartProduct
+                    var cartProduct = new CartProduct
                     {
                         ProductId = addToCartDto.ProductId,
                         CartId = cart.CartId,
@@ -53,25 +55,25 @@ namespace E_Commerce.BL
                         Size = (Size)Enum.Parse<Size>(addToCartDto.Size)
                     };
 
-                    cart.Products.Add(cartproduct);
+                    cart.Products.Add(cartProduct);
                 }
                 else
                 {
-                    int dbnumber = _unitOfWork.ProductsRepo.GetProductDetails(addToCartDto.ProductId).Product_Color_Size_Quantity
-                                                                                        .FirstOrDefault(p => p.Color == (Color)Enum.Parse<Color>(addToCartDto.Color) &&
-                                                                                         p.Size == (Size)Enum.Parse<Size>(addToCartDto.Size)).Quantity;
-                    int newNumber = productCheck.ProductCount += addToCartDto.ProductCount;
-                    if (newNumber <= dbnumber) 
-                     
-                        productCheck.ProductCount += addToCartDto.ProductCount;
-                    else
-                        productCheck.ProductCount = dbnumber;
+                    int availableQty = _unitOfWork.ProductsRepo.GetProductDetails(addToCartDto.ProductId)
+                        .Product_Color_Size_Quantity
+                        .FirstOrDefault(p => p.Color == (Color)Enum.Parse<Color>(addToCartDto.Color) &&
+                                             p.Size == (Size)Enum.Parse<Size>(addToCartDto.Size))?.Quantity ?? 0;
+
+                    int newQuantity = productCheck.ProductCount + addToCartDto.ProductCount;
+
+                    productCheck.ProductCount = newQuantity <= availableQty ? newQuantity : availableQty;
                 }
             }
-                _unitOfWork.SaveChange();
 
+            _unitOfWork.SaveChange();
         }
         #endregion
+
 
 
         //public bool ClearCartProducts(Guid CustomerId)
@@ -83,7 +85,7 @@ namespace E_Commerce.BL
         //    _unitOfWork.SaveChange();
         //    return true;
         //}
-        
+
 
         #region GetAllCartProducts
         public GetCartProductByCustomerIdDto GetCartProductsByCustomerId(Guid customerId)
